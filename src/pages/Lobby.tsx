@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ArrowRight, Plus, Users, Gamepad, Clock, DollarSign } from "lucide-react";
+import { ArrowRight, Plus, Users, Gamepad, Clock, DollarSign, Trophy } from "lucide-react";
 import { toast } from "@/components/ui/sonner";
 
 // Mock data for game rooms
@@ -54,6 +54,12 @@ const Lobby = () => {
             </Link>
           </div>
           <div className="flex gap-4 items-center">
+            <Button variant="ghost" className="text-green-500">
+              <Link to="/ranking" className="flex items-center gap-1">
+                <Trophy size={18} />
+                Ranking
+              </Link>
+            </Button>
             <Button variant="ghost" className="text-green-500">
               <Link to="/account">Minha Conta</Link>
             </Button>
