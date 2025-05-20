@@ -1,7 +1,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Clock, DollarSign } from "lucide-react";
+import { Users, Clock, DollarSign, UserPlus } from "lucide-react";
+import { useState } from "react";
+import InviteFriendsModal from "./InviteFriendsModal";
 
 interface GameRoomProps {
   room: {
@@ -16,6 +18,8 @@ interface GameRoomProps {
 }
 
 const GameRoomItem = ({ room, onJoin }: GameRoomProps) => {
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
+
   return (
     <Card className="bg-gray-900 border-green-900">
       <CardContent className="p-4">
@@ -37,14 +41,30 @@ const GameRoomItem = ({ room, onJoin }: GameRoomProps) => {
               </div>
             </div>
           </div>
-          <Button 
-            className={`${room.status === "Aguardando" ? "bg-green-600 hover:bg-green-700" : "bg-yellow-600 hover:bg-yellow-700"}`}
-            onClick={() => onJoin(room.id, room.name)}
-          >
-            {room.status === "Aguardando" ? "Entrar" : "Observar"}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              className="border-green-900 bg-transparent hover:bg-green-900/20 text-green-500"
+              onClick={() => setInviteModalOpen(true)}
+            >
+              <UserPlus size={18} className="mr-1" />
+              Convidar
+            </Button>
+            <Button 
+              className={`${room.status === "Aguardando" ? "bg-green-600 hover:bg-green-700" : "bg-yellow-600 hover:bg-yellow-700"}`}
+              onClick={() => onJoin(room.id, room.name)}
+            >
+              {room.status === "Aguardando" ? "Entrar" : "Observar"}
+            </Button>
+          </div>
         </div>
       </CardContent>
+      <InviteFriendsModal 
+        roomId={room.id}
+        roomName={room.name}
+        open={inviteModalOpen}
+        onOpenChange={setInviteModalOpen}
+      />
     </Card>
   );
 };
