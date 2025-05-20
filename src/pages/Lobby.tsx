@@ -1,6 +1,6 @@
 
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,11 +20,34 @@ const mockRooms = [
 ];
 
 const Lobby = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [newRoomName, setNewRoomName] = useState("");
   const [maxPlayers, setMaxPlayers] = useState("8");
+  const [rooms, setRooms] = useState(mockRooms);
+  const [userStats, setUserStats] = useState({
+    balance: 120.00,
+    matches: 24,
+    wins: 16,
+    kdRatio: 1.8,
+    level: 5
+  });
 
-  const filteredRooms = mockRooms.filter(room => 
+  // Simulate real-time updates
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Randomly update player counts and statuses
+      setRooms(prev => prev.map(room => ({
+        ...room,
+        players: Math.min(room.maxPlayers, Math.max(1, room.players + (Math.random() > 0.7 ? Math.floor(Math.random() * 3) - 1 : 0))),
+        status: Math.random() > 0.9 ? (room.status === "Aguardando" ? "Em andamento" : "Aguardando") : room.status
+      })));
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const filteredRooms = rooms.filter(room => 
     room.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -34,14 +57,32 @@ const Lobby = () => {
       return;
     }
     
+    const newRoom = {
+      id: rooms.length + 1,
+      name: newRoomName,
+      players: 1,
+      maxPlayers: parseInt(maxPlayers),
+      stakes: "R$ 2,00 / vida",
+      status: "Aguardando"
+    };
+    
+    setRooms(prev => [newRoom, ...prev]);
     toast.success(`Sala "${newRoomName}" criada com sucesso!`);
-    // Normally we would create the room via API and redirect to it
     setNewRoomName("");
+    
+    // Auto-join this room after a short delay
+    setTimeout(() => {
+      handleJoinRoom(newRoom.id, newRoom.name);
+    }, 1000);
   };
 
   const handleJoinRoom = (roomId: number, roomName: string) => {
     toast.success(`Entrando na sala: ${roomName}`);
-    // Normally we would join the room via API and redirect to the game
+    
+    // Redirect to the game page
+    setTimeout(() => {
+      navigate("/game");
+    }, 1500);
   };
 
   return (
@@ -190,30 +231,30 @@ const Lobby = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full bg-green-900 flex items-center justify-center text-2xl font-bold text-white mb-2">
+                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-700 to-green-900 flex items-center justify-center text-2xl font-bold text-white mb-2 border-2 border-green-500">
                     JD
                   </div>
                   <h3 className="text-lg font-bold text-white">JogadorDestaque</h3>
-                  <p className="text-gray-400 text-sm">Nível 5</p>
+                  <p className="text-gray-400 text-sm">Nível {userStats.level}</p>
 
                   <Separator className="my-4 bg-green-900/30" />
                   
                   <div className="w-full space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Saldo:</span>
-                      <span className="text-green-500 font-bold">R$ 120,00</span>
+                      <span className="text-green-500 font-bold">R$ {userStats.balance.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Partidas:</span>
-                      <span className="text-white">24</span>
+                      <span className="text-white">{userStats.matches}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">Vitórias:</span>
-                      <span className="text-white">16</span>
+                      <span className="text-white">{userStats.wins}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-gray-400">K/D Ratio:</span>
-                      <span className="text-white">1.8</span>
+                      <span className="text-white">{userStats.kdRatio.toFixed(1)}</span>
                     </div>
                   </div>
 
@@ -255,7 +296,7 @@ const Lobby = () => {
               </CardContent>
               <CardFooter>
                 <Button variant="ghost" className="w-full text-green-500 hover:text-green-400">
-                  Ver Ranking Completo
+                  <Link to="/ranking">Ver Ranking Completo</Link>
                 </Button>
               </CardFooter>
             </Card>

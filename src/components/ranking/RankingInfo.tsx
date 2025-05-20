@@ -53,7 +53,7 @@ const RankingInfo = () => {
                   <span className="text-gray-400">Progresso para próximo rank</span>
                   <span className="text-red-400">68%</span>
                 </div>
-                <Progress value={68} className="h-2 bg-red-950/50" />
+                <Progress value={68} className="h-2 bg-red-950/50" indicatorClassName="bg-gradient-to-r from-red-500 to-red-600" />
               </div>
             </motion.div>
             
@@ -87,7 +87,7 @@ const RankingInfo = () => {
                   <span className="text-gray-400">Progresso para próximo rank</span>
                   <span className="text-green-400">42%</span>
                 </div>
-                <Progress value={42} className="h-2 bg-green-950/50" />
+                <Progress value={42} className="h-2 bg-green-950/50" indicatorClassName="bg-gradient-to-r from-green-500 to-green-600" />
               </div>
             </motion.div>
           </div>
