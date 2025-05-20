@@ -19,7 +19,7 @@ const Ranking = () => {
   
   return (
     <motion.div 
-      className="min-h-screen bg-black bg-opacity-90 bg-[url('https://images.unsplash.com/photo-1493799582117-9a58bc1d8dea')] bg-blend-overlay bg-cover bg-fixed"
+      className="min-h-screen bg-black bg-opacity-90 bg-[url('https://images.unsplash.com/photo-1493799582117-9a58bc1d8dea')] bg-blend-multiply bg-cover bg-fixed bg-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -33,9 +33,13 @@ const Ranking = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold text-green-500 text-center">Ranking de Jogadores</h2>
+          <h2 className="text-4xl font-bold text-center">
+            <span className="bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
+              Ranking de Jogadores
+            </span>
+          </h2>
           <motion.p 
-            className="text-gray-400 text-center mt-2"
+            className="text-gray-400 text-center mt-2 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -59,27 +63,27 @@ const Ranking = () => {
             <PaginationContent>
               <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                 <PaginationItem>
-                  <PaginationPrevious href="#" />
+                  <PaginationPrevious href="#" className="bg-black/50 border border-green-900/30 hover:bg-green-900/20 hover:text-green-400" />
                 </PaginationItem>
               </motion.div>
               <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                 <PaginationItem>
-                  <PaginationLink href="#" isActive>1</PaginationLink>
+                  <PaginationLink href="#" isActive className="bg-gradient-to-r from-green-600 to-green-500 text-white">1</PaginationLink>
                 </PaginationItem>
               </motion.div>
               <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                 <PaginationItem>
-                  <PaginationLink href="#">2</PaginationLink>
+                  <PaginationLink href="#" className="bg-black/50 border border-green-900/30 hover:bg-green-900/20 hover:text-green-400">2</PaginationLink>
                 </PaginationItem>
               </motion.div>
               <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                 <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
+                  <PaginationLink href="#" className="bg-black/50 border border-green-900/30 hover:bg-green-900/20 hover:text-green-400">3</PaginationLink>
                 </PaginationItem>
               </motion.div>
               <motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.9 }}>
                 <PaginationItem>
-                  <PaginationNext href="#" />
+                  <PaginationNext href="#" className="bg-black/50 border border-green-900/30 hover:bg-green-900/20 hover:text-green-400" />
                 </PaginationItem>
               </motion.div>
             </PaginationContent>
