@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/sonner";
-import LobbyHeader from "@/components/lobby/LobbyHeader";
 import GameRoomsList from "@/components/lobby/GameRoomsList";
 import UserProfileCard from "@/components/lobby/UserProfileCard";
 import TopPlayersList from "@/components/lobby/TopPlayersList";
 import { GameRoom, UserStats } from "@/components/lobby/types";
+import AuthenticatedLayout from "@/components/layout/AuthenticatedLayout";
 
 // Mock data for game rooms
 const mockRooms = [
@@ -71,26 +71,27 @@ const Lobby = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black bg-opacity-95 bg-[url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05')] bg-blend-overlay bg-cover bg-fixed">
-      <div className="container mx-auto px-4 py-8">
-        <LobbyHeader />
+    <AuthenticatedLayout 
+      title="Lobby" 
+      subtitle="Escolha ou crie uma sala para jogar"
+      showHeader={true} 
+      showFooter={true}
+    >
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="md:w-3/4">
+          <GameRoomsList 
+            rooms={rooms} 
+            onJoinRoom={handleJoinRoom} 
+            onCreateRoom={handleCreateRoom} 
+          />
+        </div>
 
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-3/4">
-            <GameRoomsList 
-              rooms={rooms} 
-              onJoinRoom={handleJoinRoom} 
-              onCreateRoom={handleCreateRoom} 
-            />
-          </div>
-
-          <div className="md:w-1/4">
-            <UserProfileCard userStats={userStats} />
-            <TopPlayersList />
-          </div>
+        <div className="md:w-1/4">
+          <UserProfileCard userStats={userStats} />
+          <TopPlayersList />
         </div>
       </div>
-    </div>
+    </AuthenticatedLayout>
   );
 };
 
