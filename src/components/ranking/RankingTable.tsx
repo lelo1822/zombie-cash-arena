@@ -10,6 +10,7 @@ import {
   TableRow
 } from "@/components/ui/table";
 import { PlayerRanking } from "@/data/rankingData";
+import { motion } from "framer-motion";
 
 interface RankingTableProps {
   data: PlayerRanking[];
@@ -31,23 +32,42 @@ const RankingTable = ({ data }: RankingTableProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((player) => (
-            <TableRow key={player.rank} className="border-green-900/30 hover:bg-green-900/10">
+          {data.map((player, index) => (
+            <motion.tr
+              key={player.rank}
+              className="border-green-900/30 hover:bg-green-900/10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
+              whileHover={{ backgroundColor: "rgba(34, 197, 94, 0.15)" }}
+            >
               <TableCell className="font-medium">
                 {player.rank <= 3 ? (
                   <div className="flex items-center justify-center w-8 h-8 rounded-full">
                     {player.rank === 1 ? (
-                      <div className="text-yellow-500 text-xl font-bold">
+                      <motion.div 
+                        className="text-yellow-500 text-xl font-bold"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                      >
                         <Trophy className="h-6 w-6" />
-                      </div>
+                      </motion.div>
                     ) : player.rank === 2 ? (
-                      <div className="text-gray-300 text-xl font-bold">
+                      <motion.div 
+                        className="text-gray-300 text-xl font-bold"
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+                      >
                         2º
-                      </div>
+                      </motion.div>
                     ) : (
-                      <div className="text-amber-700 text-xl font-bold">
+                      <motion.div 
+                        className="text-amber-700 text-xl font-bold"
+                        animate={{ y: [0, -2, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                      >
                         3º
-                      </div>
+                      </motion.div>
                     )}
                   </div>
                 ) : (
@@ -57,15 +77,27 @@ const RankingTable = ({ data }: RankingTableProps) => {
               <TableCell>
                 <div className="flex items-center gap-2">
                   <div className="font-bold text-white">{player.username}</div>
-                  {player.rank === 1 && <Badge className="bg-yellow-500 text-black">Líder</Badge>}
+                  {player.rank === 1 && (
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <Badge className="bg-yellow-500 text-black">Líder</Badge>
+                    </motion.div>
+                  )}
                 </div>
               </TableCell>
               <TableCell className="text-center">{player.level}</TableCell>
               <TableCell className="text-center">{player.kdRatio.toFixed(1)}</TableCell>
               <TableCell className="text-center hidden md:table-cell">{player.victories}</TableCell>
               <TableCell className="text-center hidden md:table-cell">{player.totalKills}</TableCell>
-              <TableCell className="text-center font-bold">{player.score.toLocaleString()}</TableCell>
-            </TableRow>
+              <motion.td 
+                className="text-center font-bold"
+                whileHover={{ scale: 1.05, color: "#22c55e" }}
+              >
+                {player.score.toLocaleString()}
+              </motion.td>
+            </motion.tr>
           ))}
         </TableBody>
       </Table>
